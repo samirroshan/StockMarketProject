@@ -1,0 +1,6 @@
+finnhub-python
+confluent-kafka
+pyspark
+python-dotenv
+apache-airflow
+

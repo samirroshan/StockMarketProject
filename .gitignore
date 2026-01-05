@@ -1,0 +1,19 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+.env
+
+# Spark/Hadoop
+spark-warehouse/
+metastore_db/
+derby.log
+checkpoint/
+
+# IDEs
+.vscode/
+.idea/
+.DS_Store
+
+# Data (We don't push raw data to Git)
+data/*.csv
