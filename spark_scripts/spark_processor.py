@@ -41,17 +41,19 @@ def write_to_single_csv(batch_df, batch_id):
 
 
     rows = batch_df.select(
-        F.col("window.start").cast("string").alias("start"),
-        F.col("window.end").cast("string").alias("end"),
+        F.date_format(F.col("window.start"), "yyyy-MM-dd").alias("start_date"),
+        F.date_format(F.col("window.start"), "HH:mm:ss").alias("start_time"),
+        F.date_format(F.col("window.end"), "yyyy-MM-dd").alias("end_date"),
+        F.date_format(F.col("window.end"), "HH:mm:ss").alias("end_time"),
         "symbol",
         "moving_avg_price"
     ).collect()
     file_exists = os.path.isfile(file_name)
     with open(file_name, 'a') as f:
         if  not file_exists:
-             f.write("start,end,symbol,moving_avg_price\n")
+             f.write("start_date,start_time,end_date,end_time,symbol,moving_avg_price\n")
         for row in rows:
-             f.write(f"{row['start']},{row['end']},{row['symbol']},{row['moving_avg_price']}\n")
+             f.write(f"{row['start_date']},{row['start_time']},{row['end_date']},{row['end_time']},{row['symbol']},{row['moving_avg_price']}\n")
     print(f"Successfully processed batch {batch_id} and updated {file_name}")
 
 query = (moving_avg_df.writeStream.outputMode("update").foreachBatch(write_to_single_csv).start())
