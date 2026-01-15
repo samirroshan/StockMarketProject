@@ -3,4 +3,6 @@ confluent-kafka
 pyspark
 python-dotenv
 apache-airflow
+boto3
+aws-msk-iam-sasl-signer-python
 

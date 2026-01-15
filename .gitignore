@@ -17,3 +17,4 @@ checkpoint/
 
 # Data (We don't push raw data to Git)
 data/*.csv
+.env_global
