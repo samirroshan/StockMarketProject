@@ -11,6 +11,9 @@ A distributed data pipeline built with **Python**, **Apache Kafka**, and **PySpa
 
 ## 🚀 How to Run
 1. Start Zookeeper & Kafka.
-2. Run `python producer/stream_producer.py`.
-3. Run `python spark_scripts/spark_processor.py`.
-4. Run `python spark_scripts/visualizer.py`.
+2. python3 -m venv venv
+3. source venv/bin/activate
+4. python3 -m pip install -r requirements.txt
+5. Run `python producer/stream_producer.py`.
+6. Run `python spark_scripts/spark_processor.py`.
+7. Run `python spark_scripts/visualizer.py`.
