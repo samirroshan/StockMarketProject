@@ -17,3 +17,21 @@ A distributed data pipeline built with **Python**, **Apache Kafka**, and **PySpa
 5. Run `python producer/stream_producer.py`.
 6. Run `python spark_scripts/spark_processor.py`.
 7. Run `python spark_scripts/visualizer.py`.
+
+
+
+## EC2 Commands
+# Spark 
+
+python3 -m venv venv
+source venv/bin/activate
+python3 -m pip install -r requirements.txt
+spark-submit   --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.3.2,org.apache.hadoop:hadoop-aws:3.3.2  --conf spark.hadoop.fs.s3a.impl=org.apache.hadoop.fs.s3a.S3AFileSystem  --conf spark.hadoop.fs.s3a.access.key=ACESSKEY  --conf spark.hadoop.fs.s3a.secret.key=SECRETACCESSKEY  spark_scripts/spark_to_kafka.py
+
+# Kafka 
+bin/kafka-server-start.sh config/kraft/server.properties
+
+python3 -m venv venv
+source venv/bin/activate
+python3 -m pip install -r requirements.txt
+python producer/marketCapKafka.py

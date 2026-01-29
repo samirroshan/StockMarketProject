@@ -2,11 +2,11 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import col
 
 # ---------- CONFIG ----------
-KAFKA_BROKER = "PRIVATE_IP_OF_KAFKA:9092"
-TOPIC = "events"
+KAFKA_BROKER = "172.31.10.227:9092"
+TOPIC = "stockMarketCap"
 S3_BUCKET = "kafka-stock-market-market-cap-bucket"
-S3_PATH = f"s3://{S3_BUCKET}/raw/events/"
-CHECKPOINT_PATH = f"s3://{S3_BUCKET}/checkpoints/events/"
+S3_PATH = f"s3a://{S3_BUCKET}/data/bronze/MarketCap/"
+CHECKPOINT_PATH = f"s3a://{S3_BUCKET}/checkpoints/events/"
 # ----------------------------
 
 # Create Spark Session

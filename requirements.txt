@@ -1,6 +1,6 @@
 finnhub-python
 confluent-kafka
-pyspark
+pyspark==3.3.2
 python-dotenv
 apache-airflow
 boto3
