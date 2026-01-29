@@ -16,9 +16,7 @@ JOB_FLOW_OVERRIDES = {
     "Instances": {
         "InstanceGroups": [
             {"Name": "Master", "Market": "ON_DEMAND", "InstanceRole": "MASTER", "InstanceType": "m5.xlarge", "InstanceCount": 1},
-            {"Name": "Core", "Market": "ON_DEMAND", "InstanceRole": "CORE", "InstanceType": "m5.xlarge
-
-            "InstanceCount": 2,
+            {"Name": "Core", "Market": "ON_DEMAND", "InstanceRole": "CORE", "InstanceType": "m5.xlarge", "InstanceCount": 2},
         ],
         "KeepJobFlowAliveWhenNoSteps": False,
         "TerminationProtected": False,
@@ -36,7 +34,7 @@ SPARK_STEPS = [
             "Args": [
                 "spark-submit",
                 "--deploy-mode", "cluster",
-                "s3://your-stock-bucket/scripts/stock_analytics.py",
+                "s3://kafka-stock-market-market-cap-bucket/scripts/stock_analytics.py",
             ],
         },
     }
@@ -57,15 +55,15 @@ default_args = {
     "start_date": datetime(2026, 1, 29),
     "retries": 1,
 }
-
 dag = DAG(
     "emr_stockmarket_pipeline",
     default_args=default_args,
     description="EMR Spark jobs on stock data orchestrated by Airflow",
-    schedule_interval="@daily",
+    schedule=None,
     catchup=False,
     tags=["emr", "stock", "spark"],
 )
+
 
 upload_script = PythonOperator(
     task_id="upload_spark_script",
@@ -81,15 +79,14 @@ create_cluster = EmrCreateJobFlowOperator(
     dag=dag,
 )
 
-wait_cluster
-
-        = EmrJobFlowSensor(
+wait_cluster = EmrJobFlowSensor(
     task_id="wait_cluster_ready",
     job_flow_id="{{ task_instance.xcom_pull(task_ids='create_emr_cluster') }}",
     target_states=["WAITING"],
     aws_conn_id="aws_default",
     dag=dag,
 )
+
 
 add_steps = EmrAddStepsOperator(
     task_id="add_spark_steps",
@@ -114,5 +111,3 @@ terminate_cluster = EmrTerminateJobFlowOperator(
     aws_conn_id="aws_default",
     dag=dag,
 )
-
-upload_script >> create_cluster >> wait_cluster >> add_steps >> wait_step >> terminate_cluster
